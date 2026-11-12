@@ -1,0 +1,59 @@
+[33mcommit 9e5e626b90db133b60f42cbaf9289c8cad842342[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Uzair Bin Ahmad <ua740738@gmail.com>
+Date:   Thu Nov 12 22:09:20 2026 +0500
+
+     github upload
+
+[33mcommit e2e0db23e896b004b109596cf103b23e9d468bfb[m
+Author: Uzair Bin Ahmad <ua740738@gmail.com>
+Date:   Thu Nov 12 22:06:53 2026 +0500
+
+     github upload
+
+[33mcommit 3023c7b8aa3c4ee5b4a68a60839247ab2f0a7b41[m
+Author: Uzair Bin Ahmad <ua740738@gmail.com>
+Date:   Thu Nov 12 21:22:14 2026 +0500
+
+     version of golbal and venv
+
+[33mcommit 7b96e8af50c171310e392b08e7da7cef1086b242[m
+Author: Uzair Bin Ahmad <ua740738@gmail.com>
+Date:   Thu Nov 12 21:07:05 2026 +0500
+
+     all text and all track
+
+[33mcommit 87c926bd23be9ccc0b2b4fe0a95f8d3487d329ac[m
+Author: Uzair Bin Ahmad <ua740738@gmail.com>
+Date:   Thu Nov 12 21:01:43 2026 +0500
+
+     add menu for validation
+
+[33mcommit ba8cafbf8bdec90c0659626e936f11b5ccd40c00[m
+Author: Uzair Bin Ahmad <ua740738@gmail.com>
+Date:   Thu Nov 12 20:53:55 2026 +0500
+
+     add resouce gen and opearion log decorator
+
+[33mcommit 8decbf47805ba7d14e10fb80863da3dc859109f3[m
+Author: Uzair Bin Ahmad <ua740738@gmail.com>
+Date:   Thu Nov 12 20:40:03 2026 +0500
+
+     add libary operations and flexible arguments
+
+[33mcommit 97e0149fc4a649e8037bc9fe60af6447f7603ce9[m
+Author: Uzair Bin Ahmad <ua740738@gmail.com>
+Date:   Thu Nov 12 20:33:03 2026 +0500
+
+     add printbook and ebook plomorphism
+
+[33mcommit 56648afc3fba0d3b4a1f76768fc2b6f7cd4e92e2[m
+Author: Uzair Bin Ahmad <ua740738@gmail.com>
+Date:   Thu Nov 12 20:26:28 2026 +0500
+
+     implment main.py file book class
+
+[33mcommit 52b6332130060cef533ba13956e4a84e386ebe71[m
+Author: Uzair Bin Ahmad <ua740738@gmail.com>
+Date:   Thu Nov 12 18:46:31 2026 +0500
+
+    chore: setup project structure and progress tracker
