@@ -8,16 +8,16 @@
 - [x] Activated virtual environment
 
 ## Development
-- [ ] Implement Book class
-- [ ] Implement PrintedBook and EBook
-- [ ] Implement Library class
-- [ ] Implement search and filtering
-- [ ] Implement lending and returning
-- [ ] Implement generator and decorator
+- [x] Implement Book class
+- [x] Implement PrintedBook and EBook
+- [x] Implement Library class
+- [x] Implement search and filtering
+- [x] Implement lending and returning
+- [x] Implement generator and decorator
 
 ## Testing and Submission
-- [ ] Test all features
-- [ ] Commit project changes
-- [ ] Push project to GitHub
-- [ ] Capture screenshots
-- [ ] Prepare assignment report
+- [x] Test all features
+- [x] Commit project changes
+
+- [x] Capture screenshots
+- [x] Prepare assignment report
