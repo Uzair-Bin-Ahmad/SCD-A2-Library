@@ -1,3 +1,18 @@
+from functools import wraps
+def log_operation(func):
+    """Library operation ki execution log karta hai."""
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"\n[LOG] Starting: {func.__name__}")
+
+        result = func(*args, **kwargs)
+
+        print(f"[LOG] Completed: {func.__name__}")
+        return result
+
+    return wrapper
+
 class Book:
     """Library ki books ke liye base class."""
 
@@ -131,7 +146,8 @@ class Library:
             if book.get_isbn() == isbn:
                 return book
         return None
-
+    
+    @log_operation   
     def lend_book(self, isbn):
         book = self.find_by_isbn(isbn)
 
@@ -142,7 +158,8 @@ class Library:
         else:
             book.set_availability(False)
             print(f"Book borrowed successfully: {book.title}")
-
+    
+    @log_operation
     def return_book(self, isbn):
         book = self.find_by_isbn(isbn)
 
@@ -153,6 +170,19 @@ class Library:
         else:
             book.set_availability(True)
             print(f"Book returned successfully: {book.title}")
+    
+    def resource_generator(self, author=None, resource_type=None):
+        """Author ya type ke mutabiq books aik aik karke deta hai."""
+
+        for book in self.resources:
+            if author and author.lower() not in book.author.lower():
+                continue
+
+            if resource_type:
+                if type(book).__name__.lower() != resource_type.lower():
+                    continue
+
+            yield book
 
 
 
@@ -186,3 +216,16 @@ if __name__ == "__main__":
 
     print("\n--- Returning Book ---")
     library.return_book("ISBN001")
+
+    print("\n--- Generator: Search by Author ---")
+
+    for book in library.resource_generator(author="John"):
+        book.display_details()
+
+    print("\n--- Generator: Search EBooks ---")
+
+    for book in library.resource_generator(resource_type="EBook"):
+        book.display_details()
+
+    print("\n--- Decorator Metadata Test ---")
+    print("Method Name:", library.lend_book.__name__)
