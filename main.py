@@ -184,48 +184,224 @@ class Library:
 
             yield book
 
+def get_required_input(message):
+    """Khali input accept nahi karta."""
+    while True:
+        value = input(message).strip()
+
+        if value:
+            return value
+
+        print("Error: Input cannot be empty.")
 
 
-if __name__ == "__main__":
-    library = Library()
-    book1 = PrintedBook(
-        "Python Basics", "John Smith",
-        "ISBN001", 250, "A1"
+def get_positive_number(message, number_type=int):
+    while True:
+        try:
+            value = number_type(input(message))
+
+            if value <= 0:
+                print("Error: Enter a positive number.")
+                continue
+
+            return value
+
+        except ValueError:
+            print("Error: Please enter a valid number.")
+
+
+def add_printed_book(library):
+    print("\n--- Add Printed Book ---")
+
+    title = get_required_input("Enter title: ")
+    author = get_required_input("Enter author: ")
+    isbn = get_required_input("Enter ISBN: ")
+    pages = get_positive_number("Enter pages: ")
+    shelf = get_required_input("Enter shelf number: ")
+
+    book = PrintedBook(title, author, isbn, pages, shelf)
+    library.add_resources(book)
+
+
+def add_ebook(library):
+    print("\n--- Add EBook ---")
+
+    title = get_required_input("Enter title: ")
+    author = get_required_input("Enter author: ")
+    isbn = get_required_input("Enter ISBN: ")
+    file_size = get_positive_number(
+        "Enter file size (MB): ", float
+    )
+    file_format = get_required_input("Enter format: ")
+
+    book = EBook(
+        title, author, isbn, file_size, file_format
     )
 
-    book2 = EBook(
-        "Learn Python", "David Lee",
-        "ISBN002", 5.5, "PDF"
-    )
+    library.add_resources(book)
 
-    library.add_resources(book1, book2)
-    print("\n--- All Library Books ---")
-    library.display_all()
 
-    print("\n--- Search by Author ---")
-    results = library.search_resources(author="John")
+def search_books(library):
+    print("\n--- Search Resources ---")
+
+    print("1. Search by Title")
+    print("2. Search by Author")
+    print("3. Search by Resource Type")
+    print("4. Search by Availability")
+
+    choice = input("Enter search option: ").strip()
+
+    if choice == "1":
+        title = get_required_input("Enter title: ")
+        results = library.search_resources(title=title)
+
+    elif choice == "2":
+        author = get_required_input("Enter author: ")
+        results = library.search_resources(author=author)
+
+    elif choice == "3":
+        print("1. PrintedBook")
+        print("2. EBook")
+
+        book_type = input("Select type: ").strip()
+
+        if book_type == "1":
+            results = library.search_resources(
+                resource_type="PrintedBook"
+            )
+        elif book_type == "2":
+            results = library.search_resources(
+                resource_type="EBook"
+            )
+        else:
+            print("Invalid resource type.")
+            return
+
+    elif choice == "4":
+        print("1. Available")
+        print("2. Borrowed")
+
+        status = input("Select status: ").strip()
+
+        if status == "1":
+            results = library.search_resources(available=True)
+        elif status == "2":
+            results = library.search_resources(available=False)
+        else:
+            print("Invalid status.")
+            return
+
+    else:
+        print("Invalid search option.")
+        return
+
+    if not results:
+        print("No matching resources found.")
+        return
 
     for book in results:
         book.display_details()
+        print("-" * 30)
 
-    print("\n--- Lending Book ---")
-    library.lend_book("ISBN001")
 
-    print("\n--- Lending Same Book Again ---")
-    library.lend_book("ISBN001")
+def filter_with_generator(library):
+    print("\n--- Generator Filter ---")
+    print("1. Filter by Author")
+    print("2. Filter by Resource Type")
 
-    print("\n--- Returning Book ---")
-    library.return_book("ISBN001")
+    choice = input("Enter choice: ").strip()
 
-    print("\n--- Generator: Search by Author ---")
+    if choice == "1":
+        author = get_required_input("Enter author: ")
+        generator = library.resource_generator(author=author)
 
-    for book in library.resource_generator(author="John"):
+    elif choice == "2":
+        print("1. PrintedBook")
+        print("2. EBook")
+
+        book_type = input("Select type: ").strip()
+
+        if book_type == "1":
+            resource_type = "PrintedBook"
+        elif book_type == "2":
+            resource_type = "EBook"
+        else:
+            print("Invalid resource type.")
+            return
+
+        generator = library.resource_generator(
+            resource_type=resource_type
+        )
+
+    else:
+        print("Invalid option.")
+        return
+
+    found = False
+
+    for book in generator:
         book.display_details()
+        print("-" * 30)
+        found = True
 
-    print("\n--- Generator: Search EBooks ---")
+    if not found:
+        print("No matching resources found.")
 
-    for book in library.resource_generator(resource_type="EBook"):
-        book.display_details()
 
-    print("\n--- Decorator Metadata Test ---")
-    print("Method Name:", library.lend_book.__name__)
+
+
+def main():
+    """User ke liye interactive library menu."""
+    library = Library()
+
+    while True:
+        print("\n========== LIBRARY MANAGEMENT SYSTEM ==========")
+        print("1. Add Printed Book")
+        print("2. Add EBook")
+        print("3. Display All Books")
+        print("4. Search Books")
+        print("5. Lend Book")
+        print("6. Return Book")
+        print("7. Generator - Filter Resources")
+        print("8. Exit")
+        print("=" * 47)
+
+        choice = input("Enter your choice (1-8): ").strip()
+
+        if choice == "1":
+            add_printed_book(library)
+
+        elif choice == "2":
+            add_ebook(library)
+
+        elif choice == "3":
+            print("\n--- All Library Resources ---")
+            library.display_all()
+
+        elif choice == "4":
+            search_books(library)
+
+        elif choice == "5":
+            isbn = get_required_input("Enter ISBN to lend: ")
+            library.lend_book(isbn)
+
+        elif choice == "6":
+            isbn = get_required_input("Enter ISBN to return: ")
+            library.return_book(isbn)
+
+        elif choice == "7":
+            filter_with_generator(library)
+
+        elif choice == "8":
+            print("\nThank you for using the Library System!")
+            break
+
+        else:
+            print("Invalid choice! Please select 1 to 8.")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError):
+        print("\nProgram closed.")
