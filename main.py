@@ -59,8 +59,105 @@ class EBook(Book):
         print(f"Format: {self.file_format}")
 
 
+class Library:
+    """Library mein books aur lending operations manage karti hai."""
+
+    def __init__(self):
+        self.resources = []
+
+    def add_resources(self, *books):
+        """*args se aik se zyada books add hoti hain."""
+        for book in books:
+            if not isinstance(book, Book):
+                print("Error: Invalid book object.")
+                continue
+
+            if any(
+                item.get_isbn() == book.get_isbn()
+                for item in self.resources
+            ):
+                print(f"Book already exists: {book.title}")
+                continue
+
+            self.resources.append(book)
+            print(f"Book added: {book.title}")
+
+    def display_all(self):
+        if not self.resources:
+            print("No books available in the library.")
+            return
+
+        for book in self.resources:
+            book.display_details()
+            print("-" * 30)
+
+    def search_resources(self, **kwargs):
+        """**kwargs se optional search filters apply hote hain."""
+        results = self.resources
+
+        title = kwargs.get("title")
+        author = kwargs.get("author")
+        resource_type = kwargs.get("resource_type")
+        available = kwargs.get("available")
+
+        if title:
+            results = [
+                book for book in results
+                if title.lower() in book.title.lower()
+            ]
+
+        if author:
+            results = [
+                book for book in results
+                if author.lower() in book.author.lower()
+            ]
+
+        if resource_type:
+            results = [
+                book for book in results
+                if type(book).__name__.lower() == resource_type.lower()
+            ]
+
+        if available is not None:
+            results = [
+                book for book in results
+                if book.is_available() == available
+            ]
+
+        return results
+
+    def find_by_isbn(self, isbn):
+        for book in self.resources:
+            if book.get_isbn() == isbn:
+                return book
+        return None
+
+    def lend_book(self, isbn):
+        book = self.find_by_isbn(isbn)
+
+        if book is None:
+            print("Error: Book not found.")
+        elif not book.is_available():
+            print("Error: Book is already borrowed.")
+        else:
+            book.set_availability(False)
+            print(f"Book borrowed successfully: {book.title}")
+
+    def return_book(self, isbn):
+        book = self.find_by_isbn(isbn)
+
+        if book is None:
+            print("Error: Book not found.")
+        elif book.is_available():
+            print("Error: Book was not borrowed.")
+        else:
+            book.set_availability(True)
+            print(f"Book returned successfully: {book.title}")
+
+
 
 if __name__ == "__main__":
+    library = Library()
     book1 = PrintedBook(
         "Python Basics", "John Smith",
         "ISBN001", 250, "A1"
@@ -71,5 +168,21 @@ if __name__ == "__main__":
         "ISBN002", 5.5, "PDF"
     )
 
-    book1.display_details()
-    book2.display_details()
+    library.add_resources(book1, book2)
+    print("\n--- All Library Books ---")
+    library.display_all()
+
+    print("\n--- Search by Author ---")
+    results = library.search_resources(author="John")
+
+    for book in results:
+        book.display_details()
+
+    print("\n--- Lending Book ---")
+    library.lend_book("ISBN001")
+
+    print("\n--- Lending Same Book Again ---")
+    library.lend_book("ISBN001")
+
+    print("\n--- Returning Book ---")
+    library.return_book("ISBN001")
